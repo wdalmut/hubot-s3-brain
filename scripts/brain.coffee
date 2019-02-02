@@ -3,8 +3,6 @@
 #
 # Configuration:
 #   HUBOT_S3_BRAIN_BUCKET             - Bucket to store brain in
-#   HUBOT_S3_BRAIN_ACCESS_KEY_ID      - [Optional] AWS Access Key ID with S3 permissions
-#   HUBOT_S3_BRAIN_SECRET_ACCESS_KEY  - [Optional] AWS Secret Access Key for ID
 #   HUBOT_S3_BRAIN_FILE_PATH          - [Optional] Path/File in bucket to store brain at
 #   HUBOT_S3_BRAIN_SAVE_INTERVAL      - [Optional] auto-save interval in seconds
 #   HUBOT_S3_BRAIN_ENDPOINT           - [Optional] Alternative S3 API endpoint
@@ -50,12 +48,6 @@
 util = require 'util'
 AWS  = require 'aws-sdk'
 
-config = {
-  accessKeyId: process.env.HUBOT_S3_BRAIN_ACCESS_KEY_ID || process.env.HUBOT_AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.HUBOT_S3_BRAIN_SECRET_ACCESS_KEY || process.env.HUBOT_AWS_SECRET_ACCESS_KEY
-}
-
-AWS.config.update config
 AWS.config.apiVersions = {
   s3: '2006-03-01'
 }
@@ -63,8 +55,6 @@ AWS.config.apiVersions = {
 module.exports = (robot) ->
 
   loaded            = false
-  key               = process.env.HUBOT_S3_BRAIN_ACCESS_KEY_ID
-  secret            = process.env.HUBOT_S3_BRAIN_SECRET_ACCESS_KEY
   bucket            = process.env.HUBOT_S3_BRAIN_BUCKET
   file_path         = process.env.HUBOT_S3_BRAIN_FILE_PATH || "brain-dump.json"
   # default to 30 minutes (in seconds)
